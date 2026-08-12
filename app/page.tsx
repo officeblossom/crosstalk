@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { CSSProperties, useEffect, useState } from "react";
 
-type Event = { id: number; slug: string; edition: number; eventDate: string; venue: string; address: string; participationFee: string; oneDrinkOrder: boolean; locationName: string };
+type Event = { id: number; slug: string; edition: number; eventDate: string; venue: string; address: string; participationFee: string; oneDrinkOrder: boolean; locationName: string; keyColor: string };
 
 function dateLabel(value: string) {
   return new Intl.DateTimeFormat("ja-JP", { month: "long", day: "numeric", weekday: "short" }).format(new Date(`${value}T00:00:00`));
@@ -12,17 +12,17 @@ export default function Home() {
   const [events, setEvents] = useState<Event[]>([]);
   useEffect(() => { fetch("/api/events").then((r) => r.json()).then((d) => setEvents(d.events ?? [])).catch(() => setEvents([])); }, []);
   return <main className="landing">
-    <header className="topbar"><a href="/" className="home-logo inverse" aria-label="トップへ戻る"><img src="/logo.png" alt="Cross Talk"/></a><a href="/admin" className="quiet-link">運営者の方へ</a></header>
+    <header className="topbar"><a href="/" className="home-logo" aria-label="トップへ戻る"><img src="/logoB.png" alt="Cross Talk"/></a><a href="/admin" className="quiet-link">運営者の方へ</a></header>
     <section className="hero">
-      <div className="eyebrow"><span /> TALK EVENT / KITAKYUSHU</div>
-      <h1>話すことで、<br/><em>街と人が近くなる。</em></h1>
+      <div className="eyebrow"><span /> TALK EVENT</div>
+      <h1 className="hero-copy">街と人を繋ぐ、<br/><em>令和の井戸端会議。</em></h1>
       <p>Cross Talkは、肩書きを越えて気軽に話す月に一度のトークイベントです。初めての方も、どうぞ気楽にご参加ください。</p>
       <div className="scroll-note">開催予定を見る <span>↓</span></div>
     </section>
     <section className="schedule" id="schedule">
       <div className="section-heading"><p>NEXT EVENTS</p><h2>次回のCross Talk</h2></div>
       <div className="event-grid">
-        {events.length ? events.map((event, i) => <article className="event-card" key={event.id}>
+        {events.length ? events.map((event, i) => <article className="event-card" key={event.id} style={{"--card-key":event.keyColor} as CSSProperties}>
           <div className="event-index">0{i + 1}</div><div className="event-place">{event.locationName}</div>
           <h3>Cross Talk<br/>{event.locationName}</h3>
           <dl><div><dt>DATE</dt><dd>{dateLabel(event.eventDate)}</dd></div><div><dt>VENUE</dt><dd>{event.venue}<small className="card-address">{event.address}</small></dd></div></dl>

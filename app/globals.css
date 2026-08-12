@@ -48,3 +48,21 @@ h1,h2,h3,.brand{font-family:"游ゴシック Bold","Yu Gothic Bold","Meiryo Bold
 .attendee-list article{display:grid;grid-template-columns:42px 1fr auto;gap:18px;align-items:start;padding:22px 0;border-bottom:1px solid var(--line)}
 .attendee-number{font-size:11px;color:#86796b;padding-top:3px}.attendee-list h3{font-size:15px;margin:0 0 6px}.attendee-list p{font-size:11px;color:#6d655d;margin:0}.attendee-list blockquote{margin:12px 0 0;padding:10px 13px;background:#f1e6d4;font-size:11px;line-height:1.7}.attendee-list time{font-size:10px;color:#8a8179}
 @media(max-width:800px){.event-card{min-height:445px;padding-bottom:92px}.attendee-list article{grid-template-columns:30px 1fr}.attendee-list time{grid-column:2}.join{left:20px;right:20px}}
+
+/* Venue colors, adaptive logos, and clearer form actions */
+.home-logo,.home-logo.inverse,.landing>.topbar .home-logo,.form-top .home-logo{background:transparent;overflow:visible}
+.home-logo img,.landing>.topbar .home-logo img,.form-top .home-logo img{mix-blend-mode:normal;filter:none;object-fit:contain}
+.form-shell{background:#f1e6d4}
+.form-top,.form-hero{background:var(--event-key)}
+.entry-form b{background:#a6422f;color:#fff}
+.submit{background:var(--event-key);color:#fff;border:2px solid var(--event-key)}
+.light-key .submit{color:#211711}
+.light-key .entry-form b{color:#fff}
+.venue-alert{display:block;margin-top:9px;color:#ef8c78;font-size:11px;line-height:1.6}
+.light-key .venue-alert{color:#a6422f}
+.hero-copy{font-family:var(--font-mincho),"Yu Mincho",serif!important;font-weight:900!important;letter-spacing:.01em!important}
+.event-card{border-top:8px solid var(--card-key)}
+.event-card .event-place{background:var(--card-key);color:#fff}
+.event-card .join{background:var(--card-key)}
+.event-card[style*="#f1e6d4"] .event-place,.event-card[style*="#f1e6d4"] .join{color:#211711;border:1px solid #aa9172}
+.event-card[style*="#f1e6d4"] .join span{color:#211711}

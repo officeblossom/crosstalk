@@ -10,7 +10,7 @@ export async function GET() {
     id: events.id, slug: events.slug, edition: events.edition,
     eventDate: events.eventDate, venue: events.venue, address: events.address,
     participationFee: events.participationFee, oneDrinkOrder: events.oneDrinkOrder, isOpen: events.isOpen,
-    locationName: locations.name, keyColor: locations.keyColor,
+    locationName: locations.name, keyColor: locations.keyColor, defaultVenue: locations.venue,
   }).from(events).innerJoin(locations, eq(events.locationId, locations.id))
     .where(eq(events.isOpen, true)).orderBy(asc(events.eventDate));
   return Response.json({ events: rows });
