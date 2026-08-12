@@ -30,6 +30,21 @@ export default function Home() {
         </article>) : <div className="empty-card"><strong>次回イベントは準備中です</strong><p>開催が決まり次第、こちらでお知らせします。</p></div>}
       </div>
     </section>
+    <section className="social-section" aria-labelledby="social-heading">
+      <div className="section-heading social-heading"><p>FOLLOW CROSS TALK</p><h2 id="social-heading">日々のCross Talkを、<br/>もっと近くに。</h2></div>
+      <div className="social-grid">
+        <a className="social-card social-instagram" href="https://www.instagram.com/cross_talk00/" target="_blank" rel="noopener noreferrer" aria-label="Cross TalkのInstagramを見る（新しいタブで開きます）">
+          <span className="social-number">01</span>
+          <div><span className="social-platform">INSTAGRAM</span><h3>@cross_talk00</h3><p>開催のお知らせや、当日の空気を写真でお届けします。</p></div>
+          <span className="social-link">Instagramを見る <b>↗</b></span>
+        </a>
+        <a className="social-card social-youtube" href="https://www.youtube.com/@CrossTalk-fuk" target="_blank" rel="noopener noreferrer" aria-label="Cross TalkのYouTubeを見る（新しいタブで開きます）">
+          <span className="social-number">02</span>
+          <div><span className="social-platform">YOUTUBE</span><h3>@CrossTalk-fuk</h3><p>会場で交わされたトークや、Cross Talkの記録を映像で。</p></div>
+          <span className="social-link">YouTubeを見る <b>↗</b></span>
+        </a>
+      </div>
+    </section>
     <footer><div className="brand footer-brand">CROSS TALK<span>.</span></div><p>話すことから、何かがはじまる。</p><small>© 2026 CROSS TALK</small></footer>
   </main>;
 }

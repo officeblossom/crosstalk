@@ -66,3 +66,20 @@ h1,h2,h3,.brand{font-family:"游ゴシック Bold","Yu Gothic Bold","Meiryo Bold
 .event-card .join{background:var(--card-key)}
 .event-card[style*="#f1e6d4"] .event-place,.event-card[style*="#f1e6d4"] .join{color:#211711;border:1px solid #aa9172}
 .event-card[style*="#f1e6d4"] .join span{color:#211711}
+
+/* Social channels */
+.social-section{background:#f1e6d4;color:#211711;padding:0 clamp(24px,7vw,100px) 120px}
+.social-heading{display:grid;grid-template-columns:1fr 2fr;align-items:end;border-top:1px solid #cbbba4;padding-top:90px}
+.social-heading h2{margin-bottom:42px}
+.social-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:#cbbba4;border:1px solid #cbbba4}
+.social-card{min-height:350px;padding:34px;display:flex;flex-direction:column;justify-content:space-between;color:#fff;position:relative;overflow:hidden;transition:transform .2s ease,filter .2s ease}
+.social-card:hover{filter:brightness(1.07)}
+.social-card:focus-visible{outline:3px solid #211711;outline-offset:4px}
+.social-instagram{background:#42210b}.social-youtube{background:#c1272d}
+.social-number{font:500 11px var(--font-display);letter-spacing:.15em;color:#ffffff99}
+.social-platform{font:700 11px var(--font-display);letter-spacing:.22em}
+.social-card h3{font:700 clamp(28px,4vw,48px)/1 var(--font-display);margin:12px 0 18px;letter-spacing:-.035em}
+.social-card p{max-width:360px;margin:0;color:#ffffffc9;font-size:13px;line-height:1.8}
+.social-link{display:flex;align-items:center;justify-content:space-between;border-top:1px solid #ffffff55;padding-top:18px;font-size:12px;font-weight:700}
+.social-link b{font-size:18px;font-weight:400}
+@media(max-width:800px){.social-section{padding:0 20px 80px}.social-heading{grid-template-columns:1fr;padding-top:65px}.social-heading h2{margin-bottom:32px}.social-grid{grid-template-columns:1fr}.social-card{min-height:310px;padding:26px}.social-card h3{font-size:32px}}
