@@ -42,10 +42,10 @@ export default function AdminPage() {
   }
   function copy(slug: string) { navigator.clipboard.writeText(`${window.location.origin}/e/${slug}`); }
 
-  if (!authed) return <main className="admin-login"><form onSubmit={(e) => { e.preventDefault(); void load(); }}><a href="/" className="home-logo" aria-label="トップへ戻る"><img src="/logo.png" alt="Cross Talk"/></a><p>MANAGEMENT</p><h1>運営管理画面</h1><label>管理パスコード<input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required autoFocus /></label>{error && <p className="form-error">{error}</p>}<button className="submit">ログイン <span>→</span></button></form></main>;
+  if (!authed) return <main className="admin-login"><form onSubmit={(e) => { e.preventDefault(); void load(); }}><a href="/" className="home-logo" aria-label="トップへ戻る"><img src="/logoA.png" alt="Cross Talk"/></a><p>MANAGEMENT</p><h1>運営管理画面</h1><label>管理パスコード<input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required autoFocus /></label>{error && <p className="form-error">{error}</p>}<button className="submit">ログイン <span>→</span></button></form></main>;
 
   return <main className="admin-shell">
-    <aside><a href="/" className="home-logo inverse" aria-label="トップへ戻る"><img src="/logo.png" alt="Cross Talk"/></a><nav><a href="#create">イベント作成</a><a href="#events">開催一覧</a><a href="#attendees">申込者一覧</a><a href="#locations">地域・会場</a></nav><button onClick={() => { sessionStorage.removeItem("ct-admin"); setAuthed(false); }}>ログアウト</button></aside>
+    <aside><a href="/" className="home-logo inverse" aria-label="トップへ戻る"><img src="/logoA.png" alt="Cross Talk"/></a><nav><a href="#create">イベント作成</a><a href="#events">開催一覧</a><a href="#attendees">申込者一覧</a><a href="#locations">地域・会場</a></nav><button onClick={() => { sessionStorage.removeItem("ct-admin"); setAuthed(false); }}>ログアウト</button></aside>
     <div className="admin-content">
       <header><div><p>MANAGEMENT</p><h1>イベント管理</h1></div><a href="/">公開ページを見る ↗</a></header>
       <section className="admin-stats"><div><span>登録地域</span><strong>{locations.length}</strong></div><div><span>公開中イベント</span><strong>{events.filter((x) => x.isOpen).length}</strong></div><div><span>申込者数</span><strong>{events.reduce((n, x) => n + Number(x.registrationCount), 0)}</strong></div></section>

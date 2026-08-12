@@ -83,3 +83,28 @@ h1,h2,h3,.brand{font-family:"游ゴシック Bold","Yu Gothic Bold","Meiryo Bold
 .social-link{display:flex;align-items:center;justify-content:space-between;border-top:1px solid #ffffff55;padding-top:18px;font-size:12px;font-weight:700}
 .social-link b{font-size:18px;font-weight:400}
 @media(max-width:800px){.social-section{padding:0 20px 80px}.social-heading{grid-template-columns:1fr;padding-top:65px}.social-heading h2{margin-bottom:32px}.social-grid{grid-template-columns:1fr}.social-card{min-height:310px;padding:26px}.social-card h3{font-size:32px}}
+
+/* Neutral site shell and photographic home hero */
+.landing{background:#f1e6d4;color:#211711}
+.landing>.topbar{position:absolute;inset:0 0 auto;z-index:3;color:#fff;background:linear-gradient(180deg,#17120fc7,transparent);border-color:#ffffff52}
+.landing>.hero{min-height:794px;padding-top:204px;color:#fff;background-image:linear-gradient(90deg,#15100dd9 0%,#1a120e9c 46%,#1a120e59 100%),linear-gradient(0deg,#160f0a85,#160f0a1f),url('/A.jpg');background-size:cover;background-position:center 56%}
+.landing>.hero p{color:#fff;max-width:560px;text-shadow:0 1px 18px #000}
+.landing>.hero .eyebrow,.landing>.hero .scroll-note{color:#fff}
+.landing>.hero .eyebrow span{background:#f1e6d4}.landing>.hero .scroll-note span{color:#f1e6d4}
+.landing footer{background:#f1e6d4;color:#211711;border-top:1px solid #cbbba4}
+.landing footer p,.landing footer small{color:#6f6255}
+.landing footer .brand span{color:#a6422f}
+
+/* Beige, venue-neutral administration */
+.admin-login{background:#dfceb3}
+.admin-login form{background:#f1e6d4;border:1px solid #bca98e;box-shadow:0 22px 70px #79634d2b}
+.admin-login form>p,.admin-content header p,.panel-title p{color:#78654f}
+.admin-login .submit{background:#d7bea0;border:1px solid #a78f72;color:#211711}
+.admin-login .submit span{color:#8f3d31}
+.admin-shell{background:#f1e6d4}
+.admin-shell aside{background:#dfceb3;color:#211711;border-right:1px solid #bca98e}
+.admin-shell nav a{border-color:#21171124}
+.admin-shell aside button{color:#6f6255}
+.admin-primary{background:#d7bea0;color:#211711;border:1px solid #a78f72}
+.panel-title>span{background:#d7bea0}
+@media(max-width:800px){.landing>.hero{min-height:720px;padding-top:158px;background-position:58% center}.landing>.topbar{background:linear-gradient(180deg,#17120fe0,transparent)}.admin-shell aside{border-right:0;border-bottom:1px solid #bca98e}}
