@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 
-type Event = { id: number; slug: string; edition: number; eventDate: string; venue: string; locationName: string };
+type Event = { id: number; slug: string; edition: number; eventDate: string; venue: string; address: string; locationName: string };
 
 function dateLabel(value: string) {
   return new Intl.DateTimeFormat("ja-JP", { month: "long", day: "numeric", weekday: "short" }).format(new Date(`${value}T00:00:00`));
@@ -26,7 +26,7 @@ export default function Home() {
         {events.length ? events.map((event, i) => <Link className="event-card" href={`/e/${event.slug}`} key={event.id}>
           <div className="event-index">0{i + 1}</div><div className="event-place">{event.locationName}</div>
           <h3>Cross Talk<br/>{event.locationName}</h3>
-          <dl><div><dt>DATE</dt><dd>{dateLabel(event.eventDate)}</dd></div><div><dt>VENUE</dt><dd>{event.venue}</dd></div></dl>
+          <dl><div><dt>DATE</dt><dd>{dateLabel(event.eventDate)}</dd></div><div><dt>VENUE</dt><dd>{event.venue}<small className="card-address">{event.address}</small></dd></div></dl>
           <div className="join">参加を申し込む <span>→</span></div>
         </Link>) : <div className="empty-card"><strong>次回イベントは準備中です</strong><p>開催が決まり次第、こちらでお知らせします。</p></div>}
       </div>

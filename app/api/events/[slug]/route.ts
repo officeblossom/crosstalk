@@ -8,8 +8,8 @@ export async function GET(_request: Request, { params }: { params: Promise<{ slu
   const { slug } = await params;
   const [event] = await getDb().select({
     id: events.id, slug: events.slug, edition: events.edition,
-    eventDate: events.eventDate, venue: events.venue, isOpen: events.isOpen,
-    locationName: locations.name,
+    eventDate: events.eventDate, venue: events.venue, address: events.address, isOpen: events.isOpen,
+    locationName: locations.name, keyColor: locations.keyColor,
   }).from(events).innerJoin(locations, eq(events.locationId, locations.id))
     .where(eq(events.slug, slug)).limit(1);
   return event ? Response.json({ event }) : Response.json({ error: "イベントが見つかりません" }, { status: 404 });

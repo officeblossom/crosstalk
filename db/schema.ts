@@ -6,6 +6,8 @@ export const locations = sqliteTable("locations", {
   name: text("name").notNull().unique(),
   slug: text("slug").notNull().unique(),
   venue: text("venue").notNull(),
+  address: text("address").notNull().default(""),
+  keyColor: text("key_color").notNull().default("#42210b"),
   lastCount: integer("last_count").notNull().default(0),
   createdAt: text("created_at").notNull().default(sql`CURRENT_TIMESTAMP`),
 });
@@ -17,6 +19,7 @@ export const events = sqliteTable("events", {
   edition: integer("edition").notNull(),
   eventDate: text("event_date").notNull(),
   venue: text("venue").notNull(),
+  address: text("address").notNull().default(""),
   isOpen: integer("is_open", { mode: "boolean" }).notNull().default(true),
   createdAt: text("created_at").notNull().default(sql`CURRENT_TIMESTAMP`),
 });

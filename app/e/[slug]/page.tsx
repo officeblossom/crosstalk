@@ -1,10 +1,10 @@
 "use client";
 
-import { FormEvent, useEffect, useState } from "react";
+import { CSSProperties, FormEvent, useEffect, useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 
-type EventData = { id: number; slug: string; edition: number; eventDate: string; venue: string; locationName: string; isOpen: boolean };
+type EventData = { id: number; slug: string; edition: number; eventDate: string; venue: string; address: string; locationName: string; keyColor: string; isOpen: boolean };
 
 function longDate(value: string) {
   return new Intl.DateTimeFormat("ja-JP", { year: "numeric", month: "long", day: "numeric", weekday: "short" }).format(new Date(`${value}T00:00:00`));
@@ -34,12 +34,13 @@ export default function EventPage() {
   if (!event) return <main className="form-shell"><div className="not-found"><h1>イベントが見つかりません</h1><Link href="/">開催一覧へ戻る</Link></div></main>;
   if (sent) return <main className="form-shell"><section className="thanks"><div className="thanks-mark">✓</div><p>THANK YOU</p><h1>お申し込みを<br/>受け付けました。</h1><p className="thanks-copy">当日、会場でお会いできることを楽しみにしています。</p><Link href="/">開催一覧へ戻る →</Link></section></main>;
 
-  return <main className="form-shell">
+  const isLight = event.keyColor.toLowerCase() === "#f1e6d4";
+  return <main className={`form-shell ${isLight ? "light-key" : ""}`} style={{ "--event-key": event.keyColor } as CSSProperties}>
     <header className="topbar form-top"><Link href="/" className="brand">CROSS TALK<span>.</span></Link><span>ENTRY FORM</span></header>
     <section className="form-hero">
       <div className="edition">第{event.edition}回</div><p>CROSS TALK / {event.locationName.toUpperCase()}</p>
       <h1>Cross Talk<br/><em>{event.locationName}</em></h1>
-      <div className="event-meta"><div><small>DATE</small><strong>{longDate(event.eventDate)}</strong></div><div><small>VENUE</small><strong>{event.venue}</strong></div></div>
+      <div className="event-meta"><div><small>DATE</small><strong>{longDate(event.eventDate)}</strong></div><div><small>VENUE</small><strong>{event.venue}</strong><span>{event.address}</span></div></div>
     </section>
     <section className="entry-section">
       <div className="entry-intro"><p>ENTRY</p><h2>参加申し込み</h2><span>必要事項をご入力ください。<br/>所要時間は約1分です。</span></div>
