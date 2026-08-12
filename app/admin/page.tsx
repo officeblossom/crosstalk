@@ -72,7 +72,6 @@ export default function AdminPage() {
           <label className="wide">会場住所<input name="address" key={`address-${location.id}`} defaultValue={location.address} required /></label>
           <label>参加費<input name="participationFee" placeholder="例：1,000円 / 無料" /></label>
           <label className="check-label"><input name="oneDrinkOrder" type="checkbox" />ワンドリンクオーダー</label>
-          <div className="preview-title"><small>生成されるタイトル</small><strong>第{location.lastCount + 1}回 Cross Talk{location.name}</strong></div>
           <button className="admin-primary">フォームを生成する ＋</button>
         </form>}
       </section>
