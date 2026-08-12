@@ -26,7 +26,7 @@ export async function GET(request: Request) {
   const db = getDb();
   const locationRows = await db.select().from(locations).orderBy(locations.id);
   const eventRows = await db.select({
-    id: events.id, slug: events.slug, edition: events.edition, eventDate: events.eventDate,
+    id: events.id, locationId: events.locationId, slug: events.slug, edition: events.edition, eventDate: events.eventDate,
     venue: events.venue, address: events.address, participationFee: events.participationFee,
     oneDrinkOrder: events.oneDrinkOrder, isOpen: events.isOpen, locationName: locations.name,
     registrationCount: sql<number>`count(${registrations.id})`,
@@ -39,7 +39,11 @@ export async function GET(request: Request) {
     isFirstTime: registrations.isFirstTime, topic: registrations.topic,
     createdAt: registrations.createdAt,
   }).from(registrations).orderBy(desc(registrations.createdAt));
-  return Response.json({ locations: locationRows, events: eventRows, registrations: registrationRows });
+  const resolvedLocations = locationRows.map((location) => ({
+    ...location,
+    lastCount: Math.max(location.lastCount, ...eventRows.filter((event) => event.locationId === location.id).map((event) => event.edition)),
+  }));
+  return Response.json({ locations: resolvedLocations, events: eventRows, registrations: registrationRows });
 }
 
 export async function POST(request: Request) {
@@ -69,6 +73,11 @@ export async function POST(request: Request) {
     if (edition > location.lastCount) await db.update(locations).set({ lastCount: edition }).where(eq(locations.id, locationId));
   } else if (body.action === "toggleEvent") {
     await db.update(events).set({ isOpen: body.isOpen === true }).where(eq(events.id, Number(body.eventId)));
+  } else if (body.action === "deleteEvent") {
+    const eventId = Number(body.eventId);
+    if (!eventId) return Response.json({ error: "削除するフォームを確認してください" }, { status: 400 });
+    await db.delete(registrations).where(eq(registrations.eventId, eventId));
+    await db.delete(events).where(eq(events.id, eventId));
   } else if (body.action === "deleteLocation") {
     await db.delete(locations).where(eq(locations.id, Number(body.locationId)));
   } else {

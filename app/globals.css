@@ -108,3 +108,4 @@ h1,h2,h3,.brand{font-family:"游ゴシック Bold","Yu Gothic Bold","Meiryo Bold
 .admin-primary{background:#d7bea0;color:#211711;border:1px solid #a78f72}
 .panel-title>span{background:#d7bea0}
 @media(max-width:800px){.landing>.hero{min-height:720px;padding-top:158px;background-position:58% center}.landing>.topbar{background:linear-gradient(180deg,#17120fe0,transparent)}.admin-shell aside{border-right:0;border-bottom:1px solid #bca98e}}
+.table-actions .danger-action{border-color:#b95a4e;color:#9b352a;background:#fff7ef}

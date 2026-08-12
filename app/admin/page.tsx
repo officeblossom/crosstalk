@@ -30,6 +30,11 @@ export default function AdminPage() {
     const res = await fetch("/api/admin", { method: "POST", headers: { "content-type": "application/json", "x-admin-password": password }, body: JSON.stringify(payload) });
     const data = await res.json(); if (!res.ok) return setError(data.error ?? "操作できませんでした"); await load();
   }
+  async function deleteEvent(event: EventItem) {
+    if (!window.confirm(`第${event.edition}回 Cross Talk${event.locationName}を削除しますか？\nこのフォームの申込者情報も削除され、元に戻せません。`)) return;
+    await action({ action: "deleteEvent", eventId: event.id });
+    setSelectedEvent(0);
+  }
   async function createEvent(e: FormEvent<HTMLFormElement>) {
     e.preventDefault(); const data = new FormData(e.currentTarget);
     await action({ action: "createEvent", locationId: location.id, edition: data.get("edition"), eventDate: data.get("date"), venue: data.get("venue"), address: data.get("address"), participationFee: data.get("participationFee"), oneDrinkOrder: data.get("oneDrinkOrder") === "on" });
@@ -63,7 +68,7 @@ export default function AdminPage() {
         </form>}
       </section>
       <section className="admin-panel" id="events"><div className="panel-title"><span>02</span><div><p>EVENTS</p><h2>開催フォーム一覧</h2></div></div>
-        <div className="event-table">{events.length ? events.map((x) => <article key={x.id}><div><span className={x.isOpen ? "status-open" : "status-closed"}>{x.isOpen ? "受付中" : "受付終了"}</span><h3>第{x.edition}回 Cross Talk{x.locationName}</h3><p>{x.eventDate} ・ {x.venue}<br/>{x.address}{x.participationFee && <><br/>参加費：{x.participationFee}{x.oneDrinkOrder ? "（ワンドリンクオーダー）" : ""}</>}</p></div><strong>{x.registrationCount}<small>名</small></strong><div className="table-actions"><button onClick={() => copy(x.slug)}>URLをコピー</button><a href={`/e/${x.slug}`} target="_blank" rel="noopener noreferrer">開く ↗</a><button onClick={() => action({ action: "toggleEvent", eventId: x.id, isOpen: !x.isOpen })}>{x.isOpen ? "受付終了" : "再公開"}</button></div></article>) : <p className="admin-empty">まだイベントはありません。</p>}</div>
+        <div className="event-table">{events.length ? events.map((x) => <article key={x.id}><div><span className={x.isOpen ? "status-open" : "status-closed"}>{x.isOpen ? "受付中" : "受付終了"}</span><h3>第{x.edition}回 Cross Talk{x.locationName}</h3><p>{x.eventDate} ・ {x.venue}<br/>{x.address}{x.participationFee && <><br/>参加費：{x.participationFee}{x.oneDrinkOrder ? "（ワンドリンクオーダー）" : ""}</>}</p></div><strong>{x.registrationCount}<small>名</small></strong><div className="table-actions"><button onClick={() => copy(x.slug)}>URLをコピー</button><a href={`/e/${x.slug}`} target="_blank" rel="noopener noreferrer">開く ↗</a><button onClick={() => action({ action: "toggleEvent", eventId: x.id, isOpen: !x.isOpen })}>{x.isOpen ? "受付終了" : "再公開"}</button><button className="danger-action" onClick={() => void deleteEvent(x)}>削除</button></div></article>) : <p className="admin-empty">まだイベントはありません。</p>}</div>
       </section>
       <section className="admin-panel" id="attendees"><div className="panel-title"><span>03</span><div><p>ATTENDEES</p><h2>申し込み者一覧</h2></div></div>
         {events.length ? <><label className="event-filter">会場・開催回を選択<select value={selectedEvent} onChange={(e) => setSelectedEvent(Number(e.target.value))}>{events.map((x) => <option value={x.id} key={x.id}>{x.locationName} — 第{x.edition}回（{x.eventDate}）</option>)}</select></label>
