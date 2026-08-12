@@ -15,7 +15,7 @@ function authorized(request: Request) {
 async function seed() {
   const db = getDb();
   const [{ count }] = await db.select({ count: sql<number>`count(*)` }).from(locations);
-  if (!count) await db.insert(locations).values(DEFAULT_LOCATIONS);
+  if (!Number(count)) await db.insert(locations).values(DEFAULT_LOCATIONS);
 }
 
 export async function GET(request: Request) {
@@ -27,21 +27,22 @@ export async function GET(request: Request) {
     id: events.id, locationId: events.locationId, slug: events.slug, edition: events.edition, eventDate: events.eventDate,
     venue: events.venue, address: events.address, participationFee: events.participationFee,
     oneDrinkOrder: events.oneDrinkOrder, isOpen: events.isOpen, locationName: locations.name,
-    registrationCount: sql<number>`count(${registrations.id})`,
-  }).from(events).innerJoin(locations, eq(events.locationId, locations.id))
-    .leftJoin(registrations, eq(registrations.eventId, events.id))
-    .groupBy(events.id).orderBy(desc(events.eventDate));
+  }).from(events).innerJoin(locations, eq(events.locationId, locations.id)).orderBy(desc(events.eventDate));
   const registrationRows = await db.select({
     id: registrations.id, eventId: registrations.eventId, name: registrations.name,
     status: registrations.status, affiliation: registrations.affiliation,
     isFirstTime: registrations.isFirstTime, topic: registrations.topic,
     createdAt: registrations.createdAt,
   }).from(registrations).orderBy(desc(registrations.createdAt));
+  const eventsWithCounts = eventRows.map((event) => ({
+    ...event,
+    registrationCount: registrationRows.filter((registration) => registration.eventId === event.id).length,
+  }));
   const resolvedLocations = locationRows.map((location) => ({
     ...location,
     lastCount: Math.max(location.lastCount, ...eventRows.filter((event) => event.locationId === location.id).map((event) => event.edition)),
   }));
-  return Response.json({ locations: resolvedLocations, events: eventRows, registrations: registrationRows });
+  return Response.json({ locations: resolvedLocations, events: eventsWithCounts, registrations: registrationRows });
 }
 
 export async function POST(request: Request) {
