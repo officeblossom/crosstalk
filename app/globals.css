@@ -119,3 +119,41 @@ body,button,input,select,textarea{font-family:var(--font-mincho),"Yu Mincho",ser
 .table-actions{flex-wrap:wrap;justify-content:flex-end}
 .mobile-break{display:none}
 @media(max-width:800px){.mobile-break{display:inline}}
+
+/* Readable administration and entry forms */
+.form-top>span{font-size:12px}
+.edition{font-size:14px}
+.form-hero>p{font-size:13px}
+.event-meta small{font-size:11px}
+.event-meta strong{font-size:clamp(15px,1.3vw,18px)}
+.event-meta span{font-size:13px;line-height:1.75}
+.entry-intro span{font-size:15px;line-height:2}
+.entry-form label>span,.entry-form legend{font-size:15px}
+.entry-form b,.entry-form i{font-size:11px;padding:4px 7px}
+.entry-form input:not([type=radio]),.entry-form textarea{font-size:16px;line-height:1.7;padding:17px 4px}
+.radio span{font-size:14px;padding:17px 12px!important}
+.submit{font-size:15px;padding:21px 25px}
+.privacy{font-size:12px;line-height:1.7}
+.form-error{font-size:14px}
+.admin-login form>p,.admin-content header p,.panel-title p{font-size:12px}
+.admin-login label{font-size:14px}
+.admin-login input{font-size:16px}
+.admin-shell nav a{font-size:14px}
+.admin-shell aside button{font-size:13px}
+.admin-content>header a{font-size:13px}
+.admin-stats span{font-size:13px}
+.create-form label{font-size:13px;line-height:1.5}
+.create-form input,.create-form select{font-size:16px;min-height:48px}
+.check-label{font-size:15px!important}
+.preview-title small{font-size:11px}.preview-title strong{font-size:18px}
+.admin-primary{font-size:14px}
+.event-table h3{font-size:18px;line-height:1.55}
+.event-table p{font-size:13px;line-height:1.75}
+.status-open,.status-closed{font-size:11px}
+.event-table>article>strong small{font-size:12px}
+.table-actions button,.table-actions a{font-size:12px;padding:10px 11px}
+.event-filter{font-size:13px}.event-filter select{font-size:15px}
+.attendee-list h3{font-size:17px}.attendee-list p,.attendee-list blockquote{font-size:13px}.attendee-list time{font-size:12px}
+.location-chips span,.location-chips small{font-size:12px;line-height:1.65}
+.admin-empty{font-size:14px}
+@media(max-width:800px){.form-top>span{font-size:11px}.form-hero>p{font-size:12px}.event-meta strong{font-size:16px}.entry-section{gap:52px}.entry-intro span{font-size:14px}.entry-form{gap:32px}.admin-stats span{font-size:11px}.admin-stats strong{font-size:28px}.event-table article{gap:18px}.event-table h3{font-size:17px}.table-actions{justify-content:flex-start}.table-actions button,.table-actions a{font-size:12px;min-height:40px;display:flex;align-items:center}.admin-content{padding-inline:18px}}
