@@ -1,7 +1,6 @@
 "use client";
 
 import { CSSProperties, FormEvent, useEffect, useState } from "react";
-import Link from "next/link";
 import { useParams } from "next/navigation";
 
 type EventData = { id: number; slug: string; edition: number; eventDate: string; venue: string; address: string; locationName: string; keyColor: string; isOpen: boolean };
@@ -31,12 +30,12 @@ export default function EventPage() {
   }
 
   if (loading) return <main className="form-shell"><div className="loading">読み込み中…</div></main>;
-  if (!event) return <main className="form-shell"><div className="not-found"><h1>イベントが見つかりません</h1><Link href="/">開催一覧へ戻る</Link></div></main>;
-  if (sent) return <main className="form-shell"><section className="thanks"><div className="thanks-mark">✓</div><p>THANK YOU</p><h1>お申し込みを<br/>受け付けました。</h1><p className="thanks-copy">当日、会場でお会いできることを楽しみにしています。</p><Link href="/">開催一覧へ戻る →</Link></section></main>;
+  if (!event) return <main className="form-shell"><div className="not-found"><h1>イベントが見つかりません</h1><a href="/">開催一覧へ戻る</a></div></main>;
+  if (sent) return <main className="form-shell"><section className="thanks"><div className="thanks-mark">✓</div><p>THANK YOU</p><h1>お申し込みを<br/>受け付けました。</h1><p className="thanks-copy">当日、会場でお会いできることを楽しみにしています。</p><a href="/">開催一覧へ戻る →</a></section></main>;
 
   const isLight = event.keyColor.toLowerCase() === "#f1e6d4";
   return <main className={`form-shell ${isLight ? "light-key" : ""}`} style={{ "--event-key": event.keyColor } as CSSProperties}>
-    <header className="topbar form-top"><Link href="/" className="brand">CROSS TALK<span>.</span></Link><span>ENTRY FORM</span></header>
+    <header className="topbar form-top"><a href="/" className="brand">CROSS TALK<span>.</span></a><span>ENTRY FORM</span></header>
     <section className="form-hero">
       <div className="edition">第{event.edition}回</div><p>CROSS TALK / {event.locationName.toUpperCase()}</p>
       <h1>Cross Talk<br/><em>{event.locationName}</em></h1>
