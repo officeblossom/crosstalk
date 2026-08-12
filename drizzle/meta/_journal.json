@@ -1,33 +1,12 @@
 {
   "version": "7",
-  "dialect": "sqlite",
+  "dialect": "postgresql",
   "entries": [
     {
       "idx": 0,
-      "version": "6",
-      "when": 1786525384705,
-      "tag": "0000_demonic_jack_flag",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "6",
-      "when": 1786542392168,
-      "tag": "0001_military_talisman",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "6",
-      "when": 1786543540207,
-      "tag": "0002_overrated_mach_iv",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "6",
-      "when": 1786545200000,
-      "tag": "0003_tanga_navy",
+      "version": "7",
+      "when": 1786551208118,
+      "tag": "0000_glossy_katie_power",
       "breakpoints": true
     }
   ]

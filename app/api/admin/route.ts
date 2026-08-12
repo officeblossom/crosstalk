@@ -1,5 +1,4 @@
 import { desc, eq, sql } from "drizzle-orm";
-import { env } from "cloudflare:workers";
 import { getDb } from "@/db";
 import { events, locations, registrations } from "@/db/schema";
 
@@ -10,8 +9,7 @@ const DEFAULT_LOCATIONS = [
 ];
 
 function authorized(request: Request) {
-  const runtime = env as unknown as { ADMIN_PASSWORD?: string };
-  return request.headers.get("x-admin-password") === (runtime.ADMIN_PASSWORD || "crosstalk2025");
+  return request.headers.get("x-admin-password") === (process.env.ADMIN_PASSWORD || "crosstalk2025");
 }
 
 async function seed() {
