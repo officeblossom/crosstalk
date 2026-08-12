@@ -3,7 +3,7 @@
 import { FormEvent, useEffect, useMemo, useState } from "react";
 
 type Location = { id: number; name: string; slug: string; venue: string; address: string; keyColor: string; lastCount: number };
-type EventItem = { id: number; slug: string; edition: number; eventDate: string; venue: string; address: string; locationName: string; isOpen: boolean; registrationCount: number };
+type EventItem = { id: number; slug: string; edition: number; eventDate: string; venue: string; address: string; participationFee: string; oneDrinkOrder: boolean; locationName: string; isOpen: boolean; registrationCount: number };
 
 export default function AdminPage() {
   const [password, setPassword] = useState("");
@@ -29,7 +29,7 @@ export default function AdminPage() {
   }
   async function createEvent(e: FormEvent<HTMLFormElement>) {
     e.preventDefault(); const data = new FormData(e.currentTarget);
-    await action({ action: "createEvent", locationId: location.id, edition: data.get("edition"), eventDate: data.get("date"), venue: data.get("venue"), address: data.get("address") });
+    await action({ action: "createEvent", locationId: location.id, edition: data.get("edition"), eventDate: data.get("date"), venue: data.get("venue"), address: data.get("address"), participationFee: data.get("participationFee"), oneDrinkOrder: data.get("oneDrinkOrder") === "on" });
     e.currentTarget.reset();
   }
   async function createLocation(e: FormEvent<HTMLFormElement>) {
@@ -39,10 +39,10 @@ export default function AdminPage() {
   }
   function copy(slug: string) { navigator.clipboard.writeText(`${window.location.origin}/e/${slug}`); }
 
-  if (!authed) return <main className="admin-login"><form onSubmit={(e) => { e.preventDefault(); void load(); }}><a href="/" className="brand">CROSS TALK<span>.</span></a><p>MANAGEMENT</p><h1>運営管理画面</h1><label>管理パスコード<input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required autoFocus /></label>{error && <p className="form-error">{error}</p>}<button className="submit">ログイン <span>→</span></button></form></main>;
+  if (!authed) return <main className="admin-login"><form onSubmit={(e) => { e.preventDefault(); void load(); }}><a href="/" className="home-logo" aria-label="トップへ戻る"><img src="/logo.png" alt="Cross Talk"/></a><p>MANAGEMENT</p><h1>運営管理画面</h1><label>管理パスコード<input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required autoFocus /></label>{error && <p className="form-error">{error}</p>}<button className="submit">ログイン <span>→</span></button></form></main>;
 
   return <main className="admin-shell">
-    <aside><a href="/" className="brand">CROSS TALK<span>.</span></a><nav><a href="#create">イベント作成</a><a href="#events">開催一覧</a><a href="#locations">地域・会場</a></nav><button onClick={() => { sessionStorage.removeItem("ct-admin"); setAuthed(false); }}>ログアウト</button></aside>
+    <aside><a href="/" className="home-logo inverse" aria-label="トップへ戻る"><img src="/logo.png" alt="Cross Talk"/></a><nav><a href="#create">イベント作成</a><a href="#events">開催一覧</a><a href="#locations">地域・会場</a></nav><button onClick={() => { sessionStorage.removeItem("ct-admin"); setAuthed(false); }}>ログアウト</button></aside>
     <div className="admin-content">
       <header><div><p>MANAGEMENT</p><h1>イベント管理</h1></div><a href="/">公開ページを見る ↗</a></header>
       <section className="admin-stats"><div><span>登録地域</span><strong>{locations.length}</strong></div><div><span>公開中イベント</span><strong>{events.filter((x) => x.isOpen).length}</strong></div><div><span>申込者数</span><strong>{events.reduce((n, x) => n + Number(x.registrationCount), 0)}</strong></div></section>
@@ -53,12 +53,14 @@ export default function AdminPage() {
           <label>開催日<input name="date" type="date" required /></label>
           <label className="wide">会場名<input name="venue" key={`venue-${location.id}`} defaultValue={location.venue} required /></label>
           <label className="wide">会場住所<input name="address" key={`address-${location.id}`} defaultValue={location.address} required /></label>
+          <label>参加費<input name="participationFee" placeholder="例：1,000円 / 無料" /></label>
+          <label className="check-label"><input name="oneDrinkOrder" type="checkbox" />ワンドリンクオーダー</label>
           <div className="preview-title"><small>生成されるタイトル</small><strong>第{location.lastCount + 1}回 Cross Talk{location.name}</strong></div>
           <button className="admin-primary">フォームを生成する ＋</button>
         </form>}
       </section>
       <section className="admin-panel" id="events"><div className="panel-title"><span>02</span><div><p>EVENTS</p><h2>開催フォーム一覧</h2></div></div>
-        <div className="event-table">{events.length ? events.map((x) => <article key={x.id}><div><span className={x.isOpen ? "status-open" : "status-closed"}>{x.isOpen ? "受付中" : "受付終了"}</span><h3>第{x.edition}回 Cross Talk{x.locationName}</h3><p>{x.eventDate} ・ {x.venue}<br/>{x.address}</p></div><strong>{x.registrationCount}<small>名</small></strong><div className="table-actions"><button onClick={() => copy(x.slug)}>URLをコピー</button><a href={`/e/${x.slug}`} target="_blank" rel="noopener noreferrer">開く ↗</a><button onClick={() => action({ action: "toggleEvent", eventId: x.id, isOpen: !x.isOpen })}>{x.isOpen ? "受付終了" : "再公開"}</button></div></article>) : <p className="admin-empty">まだイベントはありません。</p>}</div>
+        <div className="event-table">{events.length ? events.map((x) => <article key={x.id}><div><span className={x.isOpen ? "status-open" : "status-closed"}>{x.isOpen ? "受付中" : "受付終了"}</span><h3>第{x.edition}回 Cross Talk{x.locationName}</h3><p>{x.eventDate} ・ {x.venue}<br/>{x.address}{x.participationFee && <><br/>参加費：{x.participationFee}{x.oneDrinkOrder ? "（ワンドリンクオーダー）" : ""}</>}</p></div><strong>{x.registrationCount}<small>名</small></strong><div className="table-actions"><button onClick={() => copy(x.slug)}>URLをコピー</button><a href={`/e/${x.slug}`} target="_blank" rel="noopener noreferrer">開く ↗</a><button onClick={() => action({ action: "toggleEvent", eventId: x.id, isOpen: !x.isOpen })}>{x.isOpen ? "受付終了" : "再公開"}</button></div></article>) : <p className="admin-empty">まだイベントはありません。</p>}</div>
       </section>
       <section className="admin-panel" id="locations"><div className="panel-title"><span>03</span><div><p>LOCATIONS</p><h2>地域・会場の追加</h2></div></div>
         <div className="location-chips">{locations.map((x) => <div key={x.id} style={{borderTopColor:x.keyColor}}><strong>{x.name}</strong><span>{x.venue}<br/>{x.address}</span><small>{x.keyColor} ・ 開催済み {x.lastCount}回</small></div>)}</div>

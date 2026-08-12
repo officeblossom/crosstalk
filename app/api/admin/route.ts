@@ -27,7 +27,8 @@ export async function GET(request: Request) {
   const locationRows = await db.select().from(locations).orderBy(locations.id);
   const eventRows = await db.select({
     id: events.id, slug: events.slug, edition: events.edition, eventDate: events.eventDate,
-    venue: events.venue, address: events.address, isOpen: events.isOpen, locationName: locations.name,
+    venue: events.venue, address: events.address, participationFee: events.participationFee,
+    oneDrinkOrder: events.oneDrinkOrder, isOpen: events.isOpen, locationName: locations.name,
     registrationCount: sql<number>`count(${registrations.id})`,
   }).from(events).innerJoin(locations, eq(events.locationId, locations.id))
     .leftJoin(registrations, eq(registrations.eventId, events.id))
@@ -53,10 +54,12 @@ export async function POST(request: Request) {
     const eventDate = String(body.eventDate ?? "");
     const venue = String(body.venue ?? "").trim();
     const address = String(body.address ?? "").trim();
+    const participationFee = String(body.participationFee ?? "").trim();
+    const oneDrinkOrder = body.oneDrinkOrder === true;
     const [location] = await db.select().from(locations).where(eq(locations.id, locationId)).limit(1);
     if (!location || !edition || !eventDate || !venue || !address) return Response.json({ error: "開催情報を確認してください" }, { status: 400 });
     const slug = `${location.slug}-${eventDate.replaceAll("-", "")}-${edition}`;
-    await db.insert(events).values({ locationId, edition, eventDate, venue, address, slug });
+    await db.insert(events).values({ locationId, edition, eventDate, venue, address, participationFee, oneDrinkOrder, slug });
     if (edition > location.lastCount) await db.update(locations).set({ lastCount: edition }).where(eq(locations.id, locationId));
   } else if (body.action === "toggleEvent") {
     await db.update(events).set({ isOpen: body.isOpen === true }).where(eq(events.id, Number(body.eventId)));

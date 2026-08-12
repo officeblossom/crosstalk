@@ -22,3 +22,16 @@
 .card-address{display:block;margin-top:4px;font-size:9px;line-height:1.4;color:#777}
 .location-chips>div{border-top-width:5px}
 .location-form input[type=color]{height:48px;padding:5px;border:1px solid var(--line)}
+
+/* Honda-inspired clean Japanese typography */
+body{font-family:游ゴシック体,YuGothic,"Yu Gothic Medium",Meiryo,sans-serif;font-size:16px;line-height:1.5;letter-spacing:normal}
+h1,h2,h3,.brand{font-family:"游ゴシック Bold","Yu Gothic Bold","Meiryo Bold",sans-serif;letter-spacing:normal}
+.section-heading h2,.entry-intro h2,.panel-title h2{font-family:"游ゴシック Light","Yu Gothic Light",Meiryo,sans-serif;font-weight:400}
+.form-hero h1,.event-card h3{font-family:"游ゴシック Bold","Yu Gothic Bold","Meiryo Bold",sans-serif;font-weight:700;letter-spacing:-.02em}
+.home-logo{display:block;width:74px;height:56px;overflow:hidden;border-radius:3px;background:#fff}
+.home-logo img{width:100%;height:100%;object-fit:cover;object-position:center}
+.home-logo.inverse{background:#f1e6d4}
+.form-top .home-logo{width:68px;height:50px}
+.check-label{display:flex!important;align-items:center;gap:10px;align-self:end;min-height:48px;font-size:13px!important;color:var(--ink)!important}
+.check-label input{width:20px;height:20px;accent-color:var(--green)}
+@media(max-width:800px){.home-logo{width:62px;height:46px}.form-top .home-logo{width:58px;height:43px}.event-meta{grid-template-columns:1fr}}

@@ -15,6 +15,13 @@
       "when": 1786542392168,
       "tag": "0001_military_talisman",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1786543540207,
+      "tag": "0002_overrated_mach_iv",
+      "breakpoints": true
     }
   ]
 }

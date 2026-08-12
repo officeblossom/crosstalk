@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-type Event = { id: number; slug: string; edition: number; eventDate: string; venue: string; address: string; locationName: string };
+type Event = { id: number; slug: string; edition: number; eventDate: string; venue: string; address: string; participationFee: string; oneDrinkOrder: boolean; locationName: string };
 
 function dateLabel(value: string) {
   return new Intl.DateTimeFormat("ja-JP", { month: "long", day: "numeric", weekday: "short" }).format(new Date(`${value}T00:00:00`));
@@ -12,7 +12,7 @@ export default function Home() {
   const [events, setEvents] = useState<Event[]>([]);
   useEffect(() => { fetch("/api/events").then((r) => r.json()).then((d) => setEvents(d.events ?? [])).catch(() => setEvents([])); }, []);
   return <main className="landing">
-    <header className="topbar"><a href="/" className="brand">CROSS TALK<span>.</span></a><a href="/admin" className="quiet-link">運営者の方へ</a></header>
+    <header className="topbar"><a href="/" className="home-logo inverse" aria-label="トップへ戻る"><img src="/logo.png" alt="Cross Talk"/></a><a href="/admin" className="quiet-link">運営者の方へ</a></header>
     <section className="hero">
       <div className="eyebrow"><span /> TALK EVENT / KITAKYUSHU</div>
       <h1>話すことで、<br/><em>街と人が近くなる。</em></h1>

@@ -20,6 +20,8 @@ export const events = sqliteTable("events", {
   eventDate: text("event_date").notNull(),
   venue: text("venue").notNull(),
   address: text("address").notNull().default(""),
+  participationFee: text("participation_fee").notNull().default(""),
+  oneDrinkOrder: integer("one_drink_order", { mode: "boolean" }).notNull().default(false),
   isOpen: integer("is_open", { mode: "boolean" }).notNull().default(true),
   createdAt: text("created_at").notNull().default(sql`CURRENT_TIMESTAMP`),
 });
