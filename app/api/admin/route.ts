@@ -4,7 +4,7 @@ import { getDb } from "@/db";
 import { events, locations, registrations } from "@/db/schema";
 
 const DEFAULT_LOCATIONS = [
-  { name: "Tanga", slug: "tanga", venue: "Tanga Table", address: "福岡県北九州市小倉北区馬借1丁目5-25 ホラヤビル4F", keyColor: "#f1e6d4", lastCount: 12 },
+  { name: "Tanga", slug: "tanga", venue: "Tanga Table", address: "福岡県北九州市小倉北区馬借1丁目5-25 ホラヤビル4F", keyColor: "#1b3e51", lastCount: 12 },
   { name: "Orio", slug: "orio", venue: "おっちーハウスA棟", address: "福岡県北九州市八幡西区折尾1丁目5-6", keyColor: "#42210b", lastCount: 7 },
   { name: "Moji", slug: "moji", venue: "YARD（岡野バルブ製造株式会社 1F）", address: "福岡県北九州市門司区中町1-14", keyColor: "#c1272d", lastCount: 1 },
 ];
