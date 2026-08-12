@@ -117,3 +117,5 @@ body,button,input,select,textarea{font-family:var(--font-mincho),"Yu Mincho",ser
 .social-instagram{background:linear-gradient(135deg,#833ab4 0%,#c13584 30%,#e1306c 52%,#f77737 76%,#fcaf45 100%)}
 .social-card h3{letter-spacing:-.02em}
 .table-actions{flex-wrap:wrap;justify-content:flex-end}
+.mobile-break{display:none}
+@media(max-width:800px){.mobile-break{display:inline}}

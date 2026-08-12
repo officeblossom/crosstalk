@@ -16,7 +16,7 @@ export default function Home() {
     <section className="hero">
       <div className="eyebrow"><span /> TALK EVENT</div>
       <h1 className="hero-copy">街と人を繋ぐ、<br/><em>令和の井戸端会議。</em></h1>
-      <p>Cross Talkは、肩書きを越えて気軽に話す月に一度のトークイベントです。初めての方も、どうぞ気楽にご参加ください。</p>
+      <p>Cross Talkは、肩書きを越えて<span className="mobile-break"><br/></span>気軽に話す月に一度のトークイベントです。<span className="mobile-break"><br/></span>初めての方も、どうぞ気楽にご参加ください。</p>
       <div className="scroll-note">開催予定を見る <span>↓</span></div>
     </section>
     <section className="schedule" id="schedule">
