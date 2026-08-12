@@ -35,3 +35,16 @@ h1,h2,h3,.brand{font-family:"游ゴシック Bold","Yu Gothic Bold","Meiryo Bold
 .check-label{display:flex!important;align-items:center;gap:10px;align-self:end;min-height:48px;font-size:13px!important;color:var(--ink)!important}
 .check-label input{width:20px;height:20px;accent-color:var(--green)}
 @media(max-width:800px){.home-logo{width:62px;height:46px}.form-top .home-logo{width:58px;height:43px}.event-meta{grid-template-columns:1fr}}
+
+/* Logo integration, clear event CTAs, and attendee management */
+.landing>.topbar .home-logo,.admin-shell aside .home-logo,.form-top .home-logo{background:transparent;border-radius:0;overflow:visible}
+.landing>.topbar .home-logo img,.admin-shell aside .home-logo img,.form-top .home-logo img{mix-blend-mode:multiply;filter:brightness(1.8) saturate(.6);object-fit:cover}
+.event-card{min-height:470px;padding-bottom:96px}
+.event-card dl{margin-bottom:22px}
+.join{bottom:26px;left:30px;right:30px;min-height:48px;padding:0 17px;align-items:center;background:#42210b;color:#fff;border:0;z-index:2}
+.join span{color:#f1e6d4}
+.event-filter{display:grid;gap:9px;max-width:520px;margin:28px 0 12px;font-size:11px;font-weight:700}
+.event-filter select{width:100%;padding:13px;border:1px solid var(--line);background:#fffaf2}
+.attendee-list article{display:grid;grid-template-columns:42px 1fr auto;gap:18px;align-items:start;padding:22px 0;border-bottom:1px solid var(--line)}
+.attendee-number{font-size:11px;color:#86796b;padding-top:3px}.attendee-list h3{font-size:15px;margin:0 0 6px}.attendee-list p{font-size:11px;color:#6d655d;margin:0}.attendee-list blockquote{margin:12px 0 0;padding:10px 13px;background:#f1e6d4;font-size:11px;line-height:1.7}.attendee-list time{font-size:10px;color:#8a8179}
+@media(max-width:800px){.event-card{min-height:445px;padding-bottom:92px}.attendee-list article{grid-template-columns:30px 1fr}.attendee-list time{grid-column:2}.join{left:20px;right:20px}}

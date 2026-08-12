@@ -33,7 +33,13 @@ export async function GET(request: Request) {
   }).from(events).innerJoin(locations, eq(events.locationId, locations.id))
     .leftJoin(registrations, eq(registrations.eventId, events.id))
     .groupBy(events.id).orderBy(desc(events.eventDate));
-  return Response.json({ locations: locationRows, events: eventRows });
+  const registrationRows = await db.select({
+    id: registrations.id, eventId: registrations.eventId, name: registrations.name,
+    status: registrations.status, affiliation: registrations.affiliation,
+    isFirstTime: registrations.isFirstTime, topic: registrations.topic,
+    createdAt: registrations.createdAt,
+  }).from(registrations).orderBy(desc(registrations.createdAt));
+  return Response.json({ locations: locationRows, events: eventRows, registrations: registrationRows });
 }
 
 export async function POST(request: Request) {
