@@ -21,7 +21,7 @@ export default function EventPage() {
     e.preventDefault(); setError("");
     const form = new FormData(e.currentTarget);
     const response = await fetch("/api/registrations", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({
-      eventId: event?.id, name: form.get("name"), status: form.get("status"), affiliation: form.get("affiliation"),
+      eventId: event?.id, name: form.get("name"), status: form.get("status"), affiliation: form.get("affiliation"), socialMedia: form.get("socialMedia"),
       isFirstTime: form.get("firstTime") === "yes", topic: form.get("topic"),
     }) });
     const data = await response.json();
@@ -50,6 +50,7 @@ export default function EventPage() {
           {[['student','学生'],['worker','社会人'],['other','その他']].map(([v,l]) => <label className="radio" key={v}><input type="radio" name="status" value={v} required/><span>{l}</span></label>)}
         </div></fieldset>
         <label><span>所属 <b>必須</b></span><input name="affiliation" required placeholder="学校名・会社名など" /></label>
+        <label><span>SNS等 <i>任意</i></span><input name="socialMedia" placeholder="instagram　@cross_talk00" autoComplete="off" /></label>
         <fieldset><legend>Cross Talkへの参加 <b>必須</b></legend><div className="choice-row two">
           <label className="radio"><input type="radio" name="firstTime" value="yes" required/><span>初参加です</span></label>
           <label className="radio"><input type="radio" name="firstTime" value="no" required/><span>参加経験あり</span></label>

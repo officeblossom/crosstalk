@@ -31,6 +31,7 @@ export const registrations = pgTable("registrations", {
   name: text("name").notNull(),
   status: text("status").notNull(),
   affiliation: text("affiliation").notNull(),
+  socialMedia: text("social_media").notNull().default(""),
   isFirstTime: boolean("is_first_time").notNull(),
   topic: text("topic").notNull().default(""),
   createdAt: timestamp("created_at", { mode: "string" }).notNull().defaultNow(),

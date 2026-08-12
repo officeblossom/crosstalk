@@ -4,7 +4,7 @@ import { FormEvent, useEffect, useMemo, useState } from "react";
 
 type Location = { id: number; name: string; slug: string; venue: string; address: string; keyColor: string; lastCount: number };
 type EventItem = { id: number; slug: string; edition: number; eventDate: string; venue: string; address: string; participationFee: string; oneDrinkOrder: boolean; locationName: string; isOpen: boolean; registrationCount: number };
-type Registration = { id: number; eventId: number; name: string; status: string; affiliation: string; isFirstTime: boolean; topic: string; createdAt: string };
+type Registration = { id: number; eventId: number; name: string; status: string; affiliation: string; socialMedia: string; isFirstTime: boolean; topic: string; createdAt: string };
 
 export default function AdminPage() {
   const [password, setPassword] = useState("");
@@ -80,7 +80,7 @@ export default function AdminPage() {
       </section>
       <section className="admin-panel" id="attendees"><div className="panel-title"><span>03</span><div><p>ATTENDEES</p><h2>申し込み者一覧</h2></div></div>
         {events.length ? <><label className="event-filter">会場・開催回を選択<select value={selectedEvent} onChange={(e) => setSelectedEvent(Number(e.target.value))}>{events.map((x) => <option value={x.id} key={x.id}>{x.locationName} — 第{x.edition}回（{x.eventDate}）</option>)}</select></label>
-        <div className="attendee-list">{registrations.filter((r) => r.eventId === selectedEvent).length ? registrations.filter((r) => r.eventId === selectedEvent).map((r, i) => <article key={r.id}><div className="attendee-number">{String(i + 1).padStart(2,"0")}</div><div><h3>{r.name}</h3><p>{r.affiliation} ・ {{student:"学生",worker:"社会人",other:"その他"}[r.status] ?? r.status} ・ {r.isFirstTime ? "初参加" : "参加経験あり"}</p>{r.topic && <blockquote>{r.topic}</blockquote>}</div><time>{new Date(r.createdAt).toLocaleDateString("ja-JP")}</time></article>) : <p className="admin-empty">この開催回への申し込みはまだありません。</p>}</div></> : <p className="admin-empty">イベントを作成すると申込者を確認できます。</p>}
+        <div className="attendee-list">{registrations.filter((r) => r.eventId === selectedEvent).length ? registrations.filter((r) => r.eventId === selectedEvent).map((r, i) => <article key={r.id}><div className="attendee-number">{String(i + 1).padStart(2,"0")}</div><div><h3>{r.name}</h3><p>{r.affiliation} ・ {{student:"学生",worker:"社会人",other:"その他"}[r.status] ?? r.status} ・ {r.isFirstTime ? "初参加" : "参加経験あり"}</p>{r.socialMedia && <p className="attendee-social">SNS等：{r.socialMedia}</p>}{r.topic && <blockquote>{r.topic}</blockquote>}</div><time>{new Date(r.createdAt).toLocaleDateString("ja-JP")}</time></article>) : <p className="admin-empty">この開催回への申し込みはまだありません。</p>}</div></> : <p className="admin-empty">イベントを作成すると申込者を確認できます。</p>}
       </section>
       <section className="admin-panel" id="locations"><div className="panel-title"><span>04</span><div><p>LOCATIONS</p><h2>地域・会場の追加</h2></div></div>
         <div className="location-chips">{locations.map((x) => <div key={x.id} style={{borderTopColor:x.keyColor}}><strong>{x.name}</strong><span>{x.venue}<br/>{x.address}</span><small>{x.keyColor} ・ 開催済み {x.lastCount}回</small></div>)}</div>

@@ -157,3 +157,8 @@ body,button,input,select,textarea{font-family:var(--font-mincho),"Yu Mincho",ser
 .location-chips span,.location-chips small{font-size:12px;line-height:1.65}
 .admin-empty{font-size:14px}
 @media(max-width:800px){.form-top>span{font-size:11px}.form-hero>p{font-size:12px}.event-meta strong{font-size:16px}.entry-section{gap:52px}.entry-intro span{font-size:14px}.entry-form{gap:32px}.admin-stats span{font-size:11px}.admin-stats strong{font-size:28px}.event-table article{gap:18px}.event-table h3{font-size:17px}.table-actions{justify-content:flex-start}.table-actions button,.table-actions a{font-size:12px;min-height:40px;display:flex;align-items:center}.admin-content{padding-inline:18px}}
+
+/* Natural mobile hero line breaks and registration social details */
+.hero-copy br{display:block}
+.attendee-social{margin-top:7px!important;color:#51473e!important}
+@media(max-width:800px){.hero-copy{font-size:clamp(28px,9.4vw,48px)!important;line-height:1.32!important;letter-spacing:0!important;white-space:nowrap}.hero-copy em{display:inline-block;white-space:nowrap}}
