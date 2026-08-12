@@ -46,6 +46,15 @@ export default function AdminPage() {
     e.currentTarget.reset();
   }
   function copy(slug: string) { navigator.clipboard.writeText(`${window.location.origin}/e/${slug}`); }
+  async function downloadQr(event: EventItem) {
+    const QRCode = await import("qrcode");
+    const url = `${window.location.origin}/e/${event.slug}`;
+    const png = await QRCode.toDataURL(url, { width: 1200, margin: 3, errorCorrectionLevel: "H", color: { dark: "#211711", light: "#f1e6d4" } });
+    const link = document.createElement("a");
+    link.href = png;
+    link.download = `CrossTalk-${event.locationName}-${event.edition}-QR.png`;
+    link.click();
+  }
 
   if (!authed) return <main className="admin-login"><form onSubmit={(e) => { e.preventDefault(); void load(); }}><a href="/" className="home-logo" aria-label="トップへ戻る"><img src="/logoA.png" alt="Cross Talk"/></a><p>MANAGEMENT</p><h1>運営管理画面</h1><label>管理パスコード<input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required autoFocus /></label>{error && <p className="form-error">{error}</p>}<button className="submit">ログイン <span>→</span></button></form></main>;
 
@@ -68,7 +77,7 @@ export default function AdminPage() {
         </form>}
       </section>
       <section className="admin-panel" id="events"><div className="panel-title"><span>02</span><div><p>EVENTS</p><h2>開催フォーム一覧</h2></div></div>
-        <div className="event-table">{events.length ? events.map((x) => <article key={x.id}><div><span className={x.isOpen ? "status-open" : "status-closed"}>{x.isOpen ? "受付中" : "受付終了"}</span><h3>第{x.edition}回 Cross Talk{x.locationName}</h3><p>{x.eventDate} ・ {x.venue}<br/>{x.address}{x.participationFee && <><br/>参加費：{x.participationFee}{x.oneDrinkOrder ? "（ワンドリンクオーダー）" : ""}</>}</p></div><strong>{x.registrationCount}<small>名</small></strong><div className="table-actions"><button onClick={() => copy(x.slug)}>URLをコピー</button><a href={`/e/${x.slug}`} target="_blank" rel="noopener noreferrer">開く ↗</a><button onClick={() => action({ action: "toggleEvent", eventId: x.id, isOpen: !x.isOpen })}>{x.isOpen ? "受付終了" : "再公開"}</button><button className="danger-action" onClick={() => void deleteEvent(x)}>削除</button></div></article>) : <p className="admin-empty">まだイベントはありません。</p>}</div>
+        <div className="event-table">{events.length ? events.map((x) => <article key={x.id}><div><span className={x.isOpen ? "status-open" : "status-closed"}>{x.isOpen ? "受付中" : "受付終了"}</span><h3>第{x.edition}回 Cross Talk{x.locationName}</h3><p>{x.eventDate} ・ {x.venue}<br/>{x.address}{x.participationFee && <><br/>参加費：{x.participationFee}{x.oneDrinkOrder ? "（ワンドリンクオーダー）" : ""}</>}</p></div><strong>{x.registrationCount}<small>名</small></strong><div className="table-actions"><button onClick={() => copy(x.slug)}>URLをコピー</button><button onClick={() => void downloadQr(x)}>QRをPNG保存</button><a href={`/e/${x.slug}`} target="_blank" rel="noopener noreferrer">開く ↗</a><button onClick={() => action({ action: "toggleEvent", eventId: x.id, isOpen: !x.isOpen })}>{x.isOpen ? "受付終了" : "再公開"}</button><button className="danger-action" onClick={() => void deleteEvent(x)}>削除</button></div></article>) : <p className="admin-empty">まだイベントはありません。</p>}</div>
       </section>
       <section className="admin-panel" id="attendees"><div className="panel-title"><span>03</span><div><p>ATTENDEES</p><h2>申し込み者一覧</h2></div></div>
         {events.length ? <><label className="event-filter">会場・開催回を選択<select value={selectedEvent} onChange={(e) => setSelectedEvent(Number(e.target.value))}>{events.map((x) => <option value={x.id} key={x.id}>{x.locationName} — 第{x.edition}回（{x.eventDate}）</option>)}</select></label>
