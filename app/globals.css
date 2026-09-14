@@ -162,3 +162,10 @@ body,button,input,select,textarea{font-family:var(--font-mincho),"Yu Mincho",ser
 .hero-copy br{display:block}
 .attendee-social{margin-top:7px!important;color:#51473e!important}
 @media(max-width:800px){.hero-copy{font-size:clamp(28px,9.4vw,48px)!important;line-height:1.32!important;letter-spacing:0!important;white-space:nowrap}.hero-copy em{display:inline-block;white-space:nowrap}}
+
+.attendee-controls{display:flex;align-items:end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin:28px 0 12px}
+.attendee-controls .event-filter{flex:1 1 320px;margin:0}
+.csv-download{min-height:48px;padding:12px 18px;border:1px solid #a78f72;background:#d7bea0;color:#211711;font-size:14px;font-weight:700;cursor:pointer}
+.csv-download:hover{background:#c9ac87}
+.csv-download:focus-visible{outline:3px solid #1b3e51;outline-offset:3px}
+@media(max-width:800px){.attendee-controls{align-items:stretch}.csv-download{width:100%}}
