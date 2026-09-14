@@ -65,12 +65,11 @@ export default function AdminPage() {
   function downloadAttendeesCsv() {
     const event = events.find((item) => item.id === selectedEvent);
     if (!event) return;
-    const headers = ["申込日時", "イベント", "開催日", "名前", "ステータス", "所属", "初参加", "SNS等", "話してみたいこと"];
+    const headers = ["名前", "ステータス", "所属", "初参加", "SNS等", "話してみたいこと"];
     const eventName = `第${event.edition}回 Cross Talk${event.locationName}`;
     const statusLabels: Record<string, string> = { student: "学生", worker: "社会人", other: "その他" };
     const rows = registrations.filter((item) => item.eventId === event.id).map((item) => [
-      new Intl.DateTimeFormat("ja-JP", { timeZone: "Asia/Tokyo", dateStyle: "short", timeStyle: "short" }).format(new Date(item.createdAt)),
-      eventName, event.eventDate, item.name,
+      item.name,
       statusLabels[item.status] ?? item.status,
       item.affiliation, item.isFirstTime ? "はい" : "いいえ", item.socialMedia, item.topic,
     ]);
@@ -78,7 +77,7 @@ export default function AdminPage() {
     const url = URL.createObjectURL(new Blob([csv], { type: "text/csv;charset=utf-8" }));
     const link = document.createElement("a");
     link.href = url;
-    link.download = `CrossTalk-${event.locationName.replace(/[^a-zA-Z0-9-]/g, "_")}-${event.eventDate}-${event.edition}-attendees.csv`;
+    link.download = `${eventName.replace(/[\\/:*?"<>|]/g, "_")}　参加者名簿.csv`;
     document.body.append(link);
     link.click();
     link.remove();
