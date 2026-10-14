@@ -10,7 +10,7 @@ function discordValue(value: string, fallback = "未入力") {
 
 async function notifyDiscord(details: {
   eventName: string; eventDate: string; name: string; status: string; affiliation: string;
-  socialMedia: string; isFirstTime: boolean; topic: string;
+  socialMedia: string; isFirstTime: boolean; comesByCar: boolean; showParking: boolean; topic: string;
 }) {
   const webhookUrl = process.env.DISCORD_WEBHOOK_URL;
   if (!webhookUrl) return;
@@ -30,6 +30,7 @@ async function notifyDiscord(details: {
           { name: "ステータス", value: discordValue(STATUS_LABELS[details.status] ?? details.status), inline: true },
           { name: "所属", value: discordValue(details.affiliation), inline: true },
           { name: "参加経験", value: details.isFirstTime ? "初参加" : "参加経験あり", inline: true },
+          ...(details.showParking ? [{ name: "自家用車で来場", value: details.comesByCar ? "はい（駐車場予約希望）" : "いいえ", inline: true }] : []),
           { name: "SNS等", value: discordValue(details.socialMedia), inline: false },
           { name: "話してみたいこと", value: discordValue(details.topic), inline: false },
         ],
@@ -49,6 +50,7 @@ export async function POST(request: Request) {
   const socialMedia = String(body.socialMedia ?? "").trim();
   const topic = String(body.topic ?? "").trim();
   const isFirstTime = body.isFirstTime === true;
+  const comesByCar = body.comesByCar === true;
   if (!eventId || !name || !affiliation || !["student", "worker", "other"].includes(status)) {
     return Response.json({ error: "必須項目を入力してください" }, { status: 400 });
   }
@@ -58,11 +60,12 @@ export async function POST(request: Request) {
     locationName: locations.name,
   }).from(events).innerJoin(locations, eq(events.locationId, locations.id)).where(eq(events.id, eventId)).limit(1);
   if (!event?.isOpen) return Response.json({ error: "このフォームは受付を終了しています" }, { status: 400 });
-  await db.insert(registrations).values({ eventId, name, status, affiliation, socialMedia, isFirstTime, topic });
+  await db.insert(registrations).values({ eventId, name, status, affiliation, socialMedia, isFirstTime, comesByCar, topic });
   try {
     await notifyDiscord({
       eventName: `第${event.edition}回 Cross Talk${event.locationName}`,
-      eventDate: event.eventDate, name, status, affiliation, socialMedia, isFirstTime, topic,
+      eventDate: event.eventDate, name, status, affiliation, socialMedia, isFirstTime, comesByCar,
+      showParking: event.locationName.toLowerCase() === "moji" && event.edition === 3, topic,
     });
   } catch (error) {
     console.error("Failed to send Discord registration notification", error);

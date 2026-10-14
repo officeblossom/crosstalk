@@ -22,7 +22,7 @@ export default function EventPage() {
     const form = new FormData(e.currentTarget);
     const response = await fetch("/api/registrations", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({
       eventId: event?.id, name: form.get("name"), status: form.get("status"), affiliation: form.get("affiliation"), socialMedia: form.get("socialMedia"),
-      isFirstTime: form.get("firstTime") === "yes", topic: form.get("topic"),
+      isFirstTime: form.get("firstTime") === "yes", comesByCar: form.get("comesByCar") === "on", topic: form.get("topic"),
     }) });
     const data = await response.json();
     if (!response.ok) return setError(data.error ?? "送信できませんでした");
@@ -35,6 +35,7 @@ export default function EventPage() {
 
   const isLight = event.keyColor.toLowerCase() === "#f1e6d4";
   const venueChanged = event.venue.trim() !== event.defaultVenue.trim();
+  const isMojiThird = event.locationName.toLowerCase() === "moji" && event.edition === 3;
   return <main className={`form-shell ${isLight ? "light-key" : ""}`} style={{ "--event-key": event.keyColor } as CSSProperties}>
     <header className="topbar form-top"><a href="/" className="home-logo" aria-label="トップへ戻る"><img src={isLight ? "/logoA.png" : "/logoB.png"} alt="Cross Talk"/></a><span>ENTRY FORM</span></header>
     <section className="form-hero">
@@ -42,6 +43,7 @@ export default function EventPage() {
       <h1>Cross Talk<br/><em>{event.locationName}</em></h1>
       <div className="event-meta"><div><small>DATE</small><strong>{longDate(event.eventDate)}</strong></div><div><small>VENUE</small><strong>{event.venue}</strong><span>{event.address}</span>{venueChanged && <b className="venue-alert">会場が通常と異なります。ご注意ください。</b>}</div>{event.participationFee && <div><small>FEE</small><strong>{event.participationFee}</strong>{event.oneDrinkOrder && <span>ワンドリンクオーダー</span>}</div>}</div>
     </section>
+    {isMojiThird && <section className="access-guide" aria-labelledby="access-guide-title"><div><p>ACCESS</p><h2 id="access-guide-title">会場・駐車場のご案内</h2></div><img src="/moji-3-access.png" alt="第3回Cross Talk Mojiの会場と駐車場の案内図" /></section>}
     <section className="entry-section">
       <div className="entry-intro"><p>ENTRY</p><h2>参加申し込み</h2><span>必要事項をご入力ください。<br/>所要時間は約1分です。</span></div>
       <form onSubmit={submit} className="entry-form">
@@ -55,6 +57,7 @@ export default function EventPage() {
           <label className="radio"><input type="radio" name="firstTime" value="yes" required/><span>初参加です</span></label>
           <label className="radio"><input type="radio" name="firstTime" value="no" required/><span>参加経験あり</span></label>
         </div></fieldset>
+        {isMojiThird && <fieldset className="parking-field"><legend>来場方法 <i>任意</i></legend><label className="parking-check"><input type="checkbox" name="comesByCar"/><span>自家用車で来場する</span></label><p>駐車場は事前予約制です。必要な方はチェックを入れてください。</p></fieldset>}
         <label><span>話してみたいこと <i>任意</i></span><textarea name="topic" rows={5} placeholder="気になっているテーマや、みんなに聞いてみたいことがあればご自由にどうぞ。"/></label>
         {error && <p className="form-error">{error}</p>}
         <button type="submit" className="submit">この内容で申し込む <span>→</span></button>

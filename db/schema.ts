@@ -33,6 +33,7 @@ export const registrations = pgTable("registrations", {
   affiliation: text("affiliation").notNull(),
   socialMedia: text("social_media").notNull().default(""),
   isFirstTime: boolean("is_first_time").notNull(),
+  comesByCar: boolean("comes_by_car").notNull().default(false),
   topic: text("topic").notNull().default(""),
   createdAt: timestamp("created_at", { mode: "string" }).notNull().defaultNow(),
 });

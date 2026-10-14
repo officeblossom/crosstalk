@@ -169,3 +169,14 @@ body,button,input,select,textarea{font-family:var(--font-mincho),"Yu Mincho",ser
 .csv-download:hover{background:#c9ac87}
 .csv-download:focus-visible{outline:3px solid #1b3e51;outline-offset:3px}
 @media(max-width:800px){.attendee-controls{align-items:stretch}.csv-download{width:100%}}
+
+.access-guide{padding:70px clamp(24px,10vw,150px) 0;display:grid;gap:25px}
+.access-guide p{margin:0;color:#78654f;font-size:12px;letter-spacing:.2em}
+.access-guide h2{margin:7px 0 0;font-size:clamp(25px,3vw,38px)}
+.access-guide img{display:block;width:100%;height:auto;border:1px solid var(--line);background:#fff}
+.parking-field{display:grid;gap:12px!important}
+.parking-check{display:flex!important;align-items:center;gap:12px;padding:16px;border:1px solid #b7b8af;cursor:pointer}
+.entry-form .parking-check input{width:21px!important;height:21px;padding:0!important;accent-color:var(--event-key);flex:0 0 auto}
+.parking-check span{font-size:15px!important;font-weight:700!important}
+.parking-field>p{margin:0;color:#a6422f;font-size:13px;line-height:1.75}
+@media(max-width:800px){.access-guide{padding:50px 22px 0;gap:18px}.access-guide img{margin-inline:-22px;width:calc(100% + 44px);border-inline:0}}

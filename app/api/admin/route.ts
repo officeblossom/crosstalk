@@ -31,7 +31,7 @@ export async function GET(request: Request) {
   const registrationRows = await db.select({
     id: registrations.id, eventId: registrations.eventId, name: registrations.name,
     status: registrations.status, affiliation: registrations.affiliation, socialMedia: registrations.socialMedia,
-    isFirstTime: registrations.isFirstTime, topic: registrations.topic,
+    isFirstTime: registrations.isFirstTime, comesByCar: registrations.comesByCar, topic: registrations.topic,
     createdAt: registrations.createdAt,
   }).from(registrations).orderBy(desc(registrations.createdAt));
   const eventsWithCounts = eventRows.map((event) => ({
