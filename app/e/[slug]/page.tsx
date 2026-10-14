@@ -59,6 +59,7 @@ export default function EventPage() {
         </div></fieldset>
         {isMojiThird && <fieldset className="parking-field"><legend>来場方法 <i>任意</i></legend><label className="parking-check"><input type="checkbox" name="comesByCar"/><span>自家用車で来場する</span></label><p>駐車場は事前予約制です。必要な方はチェックを入れてください。</p></fieldset>}
         <label><span>話してみたいこと <i>任意</i></span><textarea name="topic" rows={5} placeholder="気になっているテーマや、みんなに聞いてみたいことがあればご自由にどうぞ。"/></label>
+        <p className="recording-notice">※トークは撮影・録音をして、YouTube等で公開します。予めご了承ください。</p>
         {error && <p className="form-error">{error}</p>}
         <button type="submit" className="submit">この内容で申し込む <span>→</span></button>
         <p className="privacy">ご入力いただいた情報は、本イベントの運営・連絡のみに使用します。</p>

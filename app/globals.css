@@ -179,4 +179,5 @@ body,button,input,select,textarea{font-family:var(--font-mincho),"Yu Mincho",ser
 .entry-form .parking-check input{width:21px!important;height:21px;padding:0!important;accent-color:var(--event-key);flex:0 0 auto}
 .parking-check span{font-size:15px!important;font-weight:700!important}
 .parking-field>p{margin:0;color:#a6422f;font-size:13px;line-height:1.75}
+.recording-notice{margin:0;padding:16px 18px;border-left:4px solid #a6422f;background:#fff7ef;color:#6f2d24;font-size:14px;line-height:1.8}
 @media(max-width:800px){.access-guide{padding:50px 22px 0;gap:18px}.access-guide img{margin-inline:-22px;width:calc(100% + 44px);border-inline:0}}
