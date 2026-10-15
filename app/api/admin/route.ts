@@ -56,8 +56,8 @@ export async function POST(request: Request) {
   const db = getDb();
   if (body.action === "createLocation") {
     const name = String(body.name ?? "").trim();
-    let venue = String(body.venue ?? "").trim();
-    let address = String(body.address ?? "").trim();
+    const venue = String(body.venue ?? "").trim();
+    const address = String(body.address ?? "").trim();
     const keyColor = String(body.keyColor ?? "").trim().toLowerCase();
     const slug = String(body.slug ?? "").trim().toLowerCase().replace(/[^a-z0-9-]/g, "-");
     if (!name || !venue || !address || !slug || !/^#[0-9a-f]{6}$/.test(keyColor)) return Response.json({ error: "地域名・URL名・会場・住所・カラーコードを確認してください" }, { status: 400 });
@@ -66,8 +66,8 @@ export async function POST(request: Request) {
     const locationId = Number(body.locationId);
     const edition = Number(body.edition);
     const eventDate = String(body.eventDate ?? "");
-    const venue = String(body.venue ?? "").trim();
-    const address = String(body.address ?? "").trim();
+    let venue = String(body.venue ?? "").trim();
+    let address = String(body.address ?? "").trim();
     const participationFee = String(body.participationFee ?? "").trim();
     const oneDrinkOrder = body.oneDrinkOrder === true;
     const [location] = await db.select().from(locations).where(eq(locations.id, locationId)).limit(1);
