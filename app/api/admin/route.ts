@@ -3,9 +3,14 @@ import { getDb } from "@/db";
 import { events, locations, registrations } from "@/db/schema";
 
 const DEFAULT_LOCATIONS = [
-  { name: "Tanga", slug: "tanga", venue: "Tanga Table", address: "福岡県北九州市小倉北区馬借1丁目5-25 ホラヤビル4F", keyColor: "#1b3e51", lastCount: 12 },
+  { name: "Kokura", slug: "kokura", venue: "Tanga Table", address: "福岡県北九州市小倉北区馬借1丁目5-25 ホラヤビル4F", keyColor: "#1b3e51", lastCount: 12 },
   { name: "Orio", slug: "orio", venue: "おっちーハウスA棟", address: "福岡県北九州市八幡西区折尾1丁目5-6", keyColor: "#42210b", lastCount: 7 },
   { name: "Moji", slug: "moji", venue: "YARD（岡野バルブ製造株式会社 1F）", address: "福岡県北九州市門司区中町1-14", keyColor: "#c1272d", lastCount: 1 },
+];
+
+const KOKURA_VENUES = [
+  { name: "Tanga Table", address: "福岡県北九州市小倉北区馬借1丁目5-25 ホラヤビル4F" },
+  { name: "COMPASS小倉", address: "福岡県北九州市小倉北区浅野3丁目8-1 AIMビル6階" },
 ];
 
 function authorized(request: Request) {
@@ -51,8 +56,8 @@ export async function POST(request: Request) {
   const db = getDb();
   if (body.action === "createLocation") {
     const name = String(body.name ?? "").trim();
-    const venue = String(body.venue ?? "").trim();
-    const address = String(body.address ?? "").trim();
+    let venue = String(body.venue ?? "").trim();
+    let address = String(body.address ?? "").trim();
     const keyColor = String(body.keyColor ?? "").trim().toLowerCase();
     const slug = String(body.slug ?? "").trim().toLowerCase().replace(/[^a-z0-9-]/g, "-");
     if (!name || !venue || !address || !slug || !/^#[0-9a-f]{6}$/.test(keyColor)) return Response.json({ error: "地域名・URL名・会場・住所・カラーコードを確認してください" }, { status: 400 });
@@ -66,6 +71,12 @@ export async function POST(request: Request) {
     const participationFee = String(body.participationFee ?? "").trim();
     const oneDrinkOrder = body.oneDrinkOrder === true;
     const [location] = await db.select().from(locations).where(eq(locations.id, locationId)).limit(1);
+    if (location?.name === "Kokura") {
+      const selectedVenue = KOKURA_VENUES.find((item) => item.name === venue);
+      if (!selectedVenue) return Response.json({ error: "Kokuraの会場を選択してください" }, { status: 400 });
+      venue = selectedVenue.name;
+      address = selectedVenue.address;
+    }
     if (!location || !edition || !eventDate || !venue || !address) return Response.json({ error: "開催情報を確認してください" }, { status: 400 });
     const slug = `${location.slug}-${eventDate.replaceAll("-", "")}-${edition}`;
     await db.insert(events).values({ locationId, edition, eventDate, venue, address, participationFee, oneDrinkOrder, slug });

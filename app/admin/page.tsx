@@ -6,6 +6,11 @@ type Location = { id: number; name: string; slug: string; venue: string; address
 type EventItem = { id: number; slug: string; edition: number; eventDate: string; venue: string; address: string; participationFee: string; oneDrinkOrder: boolean; locationName: string; isOpen: boolean; registrationCount: number };
 type Registration = { id: number; eventId: number; name: string; status: string; affiliation: string; socialMedia: string; isFirstTime: boolean; comesByCar: boolean; topic: string; createdAt: string };
 
+const KOKURA_VENUES = [
+  { name: "Tanga Table", address: "福岡県北九州市小倉北区馬借1丁目5-25 ホラヤビル4F" },
+  { name: "COMPASS小倉", address: "福岡県北九州市小倉北区浅野3丁目8-1 AIMビル6階" },
+];
+
 function csvCell(value: string | number) {
   const text = String(value);
   // Spreadsheet apps can interpret user-entered text as formulas.
@@ -23,6 +28,14 @@ export default function AdminPage() {
   const [selected, setSelected] = useState<number>(0);
   const [error, setError] = useState("");
   const location = useMemo(() => locations.find((x) => x.id === selected) ?? locations[0], [locations, selected]);
+  const [venue, setVenue] = useState("");
+  const [venueAddress, setVenueAddress] = useState("");
+
+  useEffect(() => {
+    if (!location) return;
+    setVenue(location.venue);
+    setVenueAddress(location.address);
+  }, [location]);
 
   async function load(pass = password) {
     const res = await fetch("/api/admin", { headers: { "x-admin-password": pass } });
@@ -96,8 +109,8 @@ export default function AdminPage() {
           <label>開催地域<select value={location.id} onChange={(e) => setSelected(Number(e.target.value))}>{locations.map((x) => <option value={x.id} key={x.id}>{x.name}</option>)}</select></label>
           <label>開催回数<input name="edition" type="number" min="1" key={`edition-${location.id}-${location.lastCount}`} defaultValue={location.lastCount + 1} required /></label>
           <label>開催日<input name="date" type="date" required /></label>
-          <label className="wide">会場名<input name="venue" key={`venue-${location.id}`} defaultValue={location.venue} required /></label>
-          <label className="wide">会場住所<input name="address" key={`address-${location.id}`} defaultValue={location.address} required /></label>
+          <label className="wide">会場名{location.name === "Kokura" ? <select name="venue" value={venue} onChange={(e) => { const next = KOKURA_VENUES.find((item) => item.name === e.target.value); setVenue(e.target.value); if (next) setVenueAddress(next.address); }} required>{KOKURA_VENUES.map((item) => <option value={item.name} key={item.name}>{item.name}</option>)}</select> : <input name="venue" value={venue} onChange={(e) => setVenue(e.target.value)} required />}</label>
+          <label className="wide">会場住所<input name="address" value={venueAddress} onChange={(e) => setVenueAddress(e.target.value)} required /></label>
           <label>参加費<input name="participationFee" placeholder="例：1,000円 / 無料" /></label>
           <label className="check-label"><input name="oneDrinkOrder" type="checkbox" />ワンドリンクオーダー</label>
           <button className="admin-primary">フォームを生成する ＋</button>
