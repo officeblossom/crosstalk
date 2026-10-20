@@ -3,7 +3,7 @@
 import { FormEvent, useEffect, useMemo, useState } from "react";
 
 type Location = { id: number; name: string; slug: string; venue: string; address: string; keyColor: string; lastCount: number };
-type EventItem = { id: number; slug: string; edition: number; eventDate: string; venue: string; address: string; participationFee: string; oneDrinkOrder: boolean; locationName: string; isOpen: boolean; registrationCount: number };
+type EventItem = { id: number; slug: string; edition: number; eventDate: string; venue: string; address: string; participationFee: string; oneDrinkOrder: boolean; locationName: string; isOpen: boolean; registrationOpen: boolean; registrationCount: number };
 type Registration = { id: number; eventId: number; name: string; status: string; affiliation: string; socialMedia: string; isFirstTime: boolean; comesByCar: boolean; topic: string; createdAt: string };
 
 const KOKURA_VENUES = [
@@ -103,7 +103,7 @@ export default function AdminPage() {
     <aside><a href="/" className="home-logo inverse" aria-label="トップへ戻る"><img src="/logoA.png" alt="Cross Talk"/></a><nav><a href="#create">イベント作成</a><a href="#events">開催一覧</a><a href="#attendees">申込者一覧</a><a href="#locations">地域・会場</a></nav><button onClick={() => { sessionStorage.removeItem("ct-admin"); setAuthed(false); }}>ログアウト</button></aside>
     <div className="admin-content">
       <header><div><p>MANAGEMENT</p><h1>イベント管理</h1></div><a href="/">公開ページを見る ↗</a></header>
-      <section className="admin-stats"><div><span>登録地域</span><strong>{locations.length}</strong></div><div><span>公開中イベント</span><strong>{events.filter((x) => x.isOpen).length}</strong></div><div><span>申込者数</span><strong>{events.reduce((n, x) => n + Number(x.registrationCount), 0)}</strong></div></section>
+      <section className="admin-stats"><div><span>登録地域</span><strong>{locations.length}</strong></div><div><span>受付中イベント</span><strong>{events.filter((x) => x.registrationOpen).length}</strong></div><div><span>申込者数</span><strong>{events.reduce((n, x) => n + Number(x.registrationCount), 0)}</strong></div></section>
       <section className="admin-panel" id="create"><div className="panel-title"><span>01</span><div><p>CREATE EVENT</p><h2>新しいフォームを作る</h2></div></div>
         {location && <form className="create-form" onSubmit={createEvent}>
           <label>開催地域<select value={location.id} onChange={(e) => setSelected(Number(e.target.value))}>{locations.map((x) => <option value={x.id} key={x.id}>{x.name}</option>)}</select></label>
@@ -117,7 +117,7 @@ export default function AdminPage() {
         </form>}
       </section>
       <section className="admin-panel" id="events"><div className="panel-title"><span>02</span><div><p>EVENTS</p><h2>開催フォーム一覧</h2></div></div>
-        <div className="event-table">{events.length ? events.map((x) => <article key={x.id}><div><span className={x.isOpen ? "status-open" : "status-closed"}>{x.isOpen ? "受付中" : "受付終了"}</span><h3>第{x.edition}回 Cross Talk{x.locationName}</h3><p>{x.eventDate} ・ {x.venue}<br/>{x.address}{x.participationFee && <><br/>参加費：{x.participationFee}{x.oneDrinkOrder ? "（ワンドリンクオーダー）" : ""}</>}</p></div><strong>{x.registrationCount}<small>名</small></strong><div className="table-actions"><button onClick={() => copy(x.slug)}>URLをコピー</button><button onClick={() => void downloadQr(x)}>QRをPNG保存</button><a href={`/e/${x.slug}`} target="_blank" rel="noopener noreferrer">開く ↗</a><button onClick={() => action({ action: "toggleEvent", eventId: x.id, isOpen: !x.isOpen })}>{x.isOpen ? "受付終了" : "再公開"}</button><button className="danger-action" onClick={() => void deleteEvent(x)}>削除</button></div></article>) : <p className="admin-empty">まだイベントはありません。</p>}</div>
+        <div className="event-table">{events.length ? events.map((x) => <article key={x.id}><div><span className={x.registrationOpen ? "status-open" : "status-closed"}>{x.registrationOpen ? "受付中" : x.isOpen ? "自動終了" : "受付終了"}</span><h3>第{x.edition}回 Cross Talk{x.locationName}</h3><p>{x.eventDate} ・ {x.venue}<br/>{x.address}{x.participationFee && <><br/>参加費：{x.participationFee}{x.oneDrinkOrder ? "（ワンドリンクオーダー）" : ""}</>}</p></div><strong>{x.registrationCount}<small>名</small></strong><div className="table-actions"><button onClick={() => copy(x.slug)}>URLをコピー</button><button onClick={() => void downloadQr(x)}>QRをPNG保存</button><a href={`/e/${x.slug}`} target="_blank" rel="noopener noreferrer">開く ↗</a><button onClick={() => action({ action: "toggleEvent", eventId: x.id, isOpen: !x.isOpen })}>{x.isOpen ? "受付終了" : "再公開"}</button><button className="danger-action" onClick={() => void deleteEvent(x)}>削除</button></div></article>) : <p className="admin-empty">まだイベントはありません。</p>}</div>
       </section>
       <section className="admin-panel" id="attendees"><div className="panel-title"><span>03</span><div><p>ATTENDEES</p><h2>申し込み者一覧</h2></div></div>
         {events.length ? <><div className="attendee-controls"><label className="event-filter">会場・開催回を選択<select value={selectedEvent} onChange={(e) => setSelectedEvent(Number(e.target.value))}>{events.map((x) => <option value={x.id} key={x.id}>{x.locationName} — 第{x.edition}回（{x.eventDate}）</option>)}</select></label><button type="button" className="csv-download" onClick={downloadAttendeesCsv}>参加者一覧をCSVで保存 ↓</button></div>

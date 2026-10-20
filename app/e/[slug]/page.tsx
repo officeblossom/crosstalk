@@ -32,6 +32,7 @@ export default function EventPage() {
   if (loading) return <main className="form-shell"><div className="loading">読み込み中…</div></main>;
   if (!event) return <main className="form-shell"><div className="not-found"><h1>イベントが見つかりません</h1><a href="/">開催一覧へ戻る</a></div></main>;
   if (sent) return <main className="form-shell"><section className="thanks"><div className="thanks-mark">✓</div><p>THANK YOU</p><h1>お申し込みを<br/>受け付けました。</h1><p className="thanks-copy">当日、会場でお会いできることを楽しみにしています。</p><a href="/">開催一覧へ戻る →</a></section></main>;
+  if (!event.isOpen) return <main className="form-shell"><div className="not-found"><h1>受付は終了しました</h1><p>参加申し込みは、開催当日の12時に締め切りました。</p><a href="/">開催一覧へ戻る</a></div></main>;
 
   const isLight = event.keyColor.toLowerCase() === "#f1e6d4";
   const venueChanged = event.venue.trim() !== event.defaultVenue.trim();

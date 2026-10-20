@@ -1,6 +1,7 @@
 import { eq } from "drizzle-orm";
 import { getDb } from "@/db";
 import { events, locations, registrations } from "@/db/schema";
+import { isRegistrationOpen } from "@/lib/event-availability";
 
 const STATUS_LABELS: Record<string, string> = { student: "学生", worker: "社会人", other: "その他" };
 
@@ -59,7 +60,7 @@ export async function POST(request: Request) {
     id: events.id, edition: events.edition, eventDate: events.eventDate, isOpen: events.isOpen,
     locationName: locations.name,
   }).from(events).innerJoin(locations, eq(events.locationId, locations.id)).where(eq(events.id, eventId)).limit(1);
-  if (!event?.isOpen) return Response.json({ error: "このフォームは受付を終了しています" }, { status: 400 });
+  if (!event || !isRegistrationOpen(event.eventDate, event.isOpen)) return Response.json({ error: "このフォームは受付を終了しています" }, { status: 400 });
   await db.insert(registrations).values({ eventId, name, status, affiliation, socialMedia, isFirstTime, comesByCar, topic });
   try {
     await notifyDiscord({

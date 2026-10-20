@@ -1,6 +1,7 @@
 import { and, asc, eq, gte } from "drizzle-orm";
 import { getDb } from "@/db";
 import { events, locations } from "@/db/schema";
+import { isRegistrationOpen } from "@/lib/event-availability";
 
 export const dynamic = "force-dynamic";
 
@@ -16,5 +17,5 @@ export async function GET() {
     locationName: locations.name, keyColor: locations.keyColor, defaultVenue: locations.venue,
   }).from(events).innerJoin(locations, eq(events.locationId, locations.id))
     .where(and(eq(events.isOpen, true), gte(events.eventDate, today))).orderBy(asc(events.eventDate));
-  return Response.json({ events: rows });
+  return Response.json({ events: rows.filter((event) => isRegistrationOpen(event.eventDate, event.isOpen)) });
 }

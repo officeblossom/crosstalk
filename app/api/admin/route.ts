@@ -1,6 +1,7 @@
 import { desc, eq, sql } from "drizzle-orm";
 import { getDb } from "@/db";
 import { events, locations, registrations } from "@/db/schema";
+import { isRegistrationOpen } from "@/lib/event-availability";
 
 const DEFAULT_LOCATIONS = [
   { name: "Kokura", slug: "kokura", venue: "Tanga Table", address: "福岡県北九州市小倉北区馬借1丁目5-25 ホラヤビル4F", keyColor: "#1b3e51", lastCount: 12 },
@@ -41,6 +42,7 @@ export async function GET(request: Request) {
   }).from(registrations).orderBy(desc(registrations.createdAt));
   const eventsWithCounts = eventRows.map((event) => ({
     ...event,
+    registrationOpen: isRegistrationOpen(event.eventDate, event.isOpen),
     registrationCount: registrationRows.filter((registration) => registration.eventId === event.id).length,
   }));
   const resolvedLocations = locationRows.map((location) => ({
