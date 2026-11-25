@@ -1,5 +1,5 @@
 export function registrationDeadline(eventDate: string) {
-  return new Date(`${eventDate}T12:00:00+09:00`);
+  return new Date(`${eventDate}T13:00:00+09:00`);
 }
 
 export function isRegistrationOpen(eventDate: string, manuallyOpen: boolean, now = new Date()) {
